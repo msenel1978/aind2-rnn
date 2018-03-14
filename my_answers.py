@@ -4,9 +4,9 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
 import keras
+from string import ascii_lowercase
 
-
-# TODO: fill out the function below that transforms the input series 
+# DONE: fill out the function below that transforms the input series 
 # and window-size into a set of input/output pairs for use with our RNN model
 def window_transform_series(series, window_size):
     # containers for input/output pairs
@@ -21,7 +21,7 @@ def window_transform_series(series, window_size):
 
     return X,y
 
-# TODO: build an RNN to perform regression on our time series input/output data
+# DONE: build an RNN to perform regression on our time series input/output data
 def build_part1_RNN(window_size):
     rnn_model = Sequential()
     rnn_model.add(LSTM(units = 5, input_shape = (window_size, 1)))
@@ -30,13 +30,17 @@ def build_part1_RNN(window_size):
     return rnn_model
 
 
-### TODO: return the text input with only ascii lowercase and the punctuation given below included.
+### DONE: return the text input with only ascii lowercase and the punctuation given below included.
 def cleaned_text(text):
     punctuation = ['!', ',', '.', ':', ';', '?']
 
-    return text
+    # Keep punctuation and lower case ASCII	
+    keep_char = punctuation + [ch for ch in ascii_lowercase] 
+    
+    # Keep if char is in keep_char. Otherwise, replace with space
+    return ''.join([c if c in keep_char else ' ' for c in text])
 
-### TODO: fill out the function below that transforms the input text and window-size into a set of input/output pairs for use with our RNN model
+### DONE: fill out the function below that transforms the input text and window-size into a set of input/output pairs for use with our RNN model
 def window_transform_text(text, window_size, step_size):
     # containers for input/output pairs
     inputs = []
