@@ -3,6 +3,7 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
+from keras.layers import Activation
 import keras
 from string import ascii_lowercase
 
@@ -23,11 +24,11 @@ def window_transform_series(series, window_size):
 
 # DONE: build an RNN to perform regression on our time series input/output data
 def build_part1_RNN(window_size):
-    rnn_model = Sequential()
-    rnn_model.add(LSTM(units = 5, input_shape = (window_size, 1)))
-    rnn_model.add(Dense(units = 1))
+    rnn_model1 = Sequential()
+    rnn_model1.add(LSTM(units = 5, input_shape = (window_size, 1)))
+    rnn_model1.add(Dense(units = 1))
 
-    return rnn_model
+    return rnn_model1
 
 
 ### DONE: return the text input with only ascii lowercase and the punctuation given below included.
@@ -43,12 +44,17 @@ def cleaned_text(text):
 ### DONE: fill out the function below that transforms the input text and window-size into a set of input/output pairs for use with our RNN model
 def window_transform_text(text, window_size, step_size):
     # containers for input/output pairs
-    inputs = []
-    outputs = []
+    inputs = [text[i:i+window_size] for i in range(0, len(text) - window_size, step_size)]
+    outputs = [text[i] for i in range(window_size, len(text), step_size)]
 
     return inputs,outputs
 
-# TODO build the required RNN model: 
+# DONE build the required RNN model: 
 # a single LSTM hidden layer with softmax activation, categorical_crossentropy loss 
 def build_part2_RNN(window_size, num_chars):
-    pass
+    rnn_model2 = Sequential()
+    rnn_model2.add(LSTM(units=200, input_shape = (window_size, num_chars)))
+    rnn_model2.add(Dense(units = num_chars))
+    rnn_model2.add(Activation('softmax'))
+    
+    return rnn_model2
